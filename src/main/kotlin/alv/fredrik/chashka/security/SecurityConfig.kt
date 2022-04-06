@@ -1,14 +1,18 @@
 package alv.fredrik.chashka.security
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
 import org.springframework.security.oauth2.core.OAuth2TokenValidator
 import org.springframework.security.oauth2.jwt.*
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     @Value("\${auth0.audience}")
     private val audience: String,
@@ -28,6 +32,9 @@ class SecurityConfig(
             .oauth2ResourceServer()
             .jwt()
             .decoder(jwtDecoder())
+            .jwtAuthenticationConverter(jwtAuthenticationConverter())
+
+        http.cors()
     }
 
     fun jwtDecoder(): JwtDecoder {
@@ -39,6 +46,17 @@ class SecurityConfig(
         jwtDecoder.setJwtValidator(validator)
 
         return jwtDecoder
+    }
+
+    fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
+        val converter = JwtGrantedAuthoritiesConverter()
+        converter.setAuthoritiesClaimName("permissions")
+        converter.setAuthorityPrefix("")
+
+        val jwtConverter = JwtAuthenticationConverter()
+        jwtConverter.setJwtGrantedAuthoritiesConverter(converter)
+
+        return jwtConverter
     }
 
 }

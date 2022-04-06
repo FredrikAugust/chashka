@@ -1,5 +1,13 @@
 # Chashka - a non-functioning coffee brewing tracker
 
+## Overview
+
+`src/` frontend
+
+everything else; backend
+
+------
+
 A dummy project to get familiar with new technology
 
 ## Backend

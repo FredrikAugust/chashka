@@ -2,7 +2,7 @@
 
 ## Overview
 
-`src/` frontend
+`frontend/` frontend
 
 everything else; backend
 

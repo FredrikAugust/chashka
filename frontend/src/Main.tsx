@@ -5,8 +5,8 @@ import APITest from "./APITest";
 const Main: React.FC = () => {
     const {isLoading, error, isAuthenticated, loginWithRedirect} = useAuth0();
 
-    if (isLoading)return <code>loading...</code>
-    if (error)return <code>shit! {error.message}</code>
+    if (isLoading)return <p>Loading...</p>
+    if (error)return <p>Crikey! An error: {error.message}</p>
 
     if (isAuthenticated) {
         return <APITest/>
